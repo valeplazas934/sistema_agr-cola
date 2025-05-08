@@ -2,17 +2,42 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CultivationPublication extends Model
 {
-    public function user() 
-{ 
-return $this->belongsTo(User::class, 'idUser'); 
-} 
-public function comments() 
-{ 
-return $this->hasMany(Comment::class, 
-'idCultivationPublication'); 
-}
+    use HasFactory;
+
+    protected $fillable = [
+        'cropTitle',
+        'cropContent',
+        'idUser',
+        'category_id',
+        'creationDate',
+    ];
+
+    protected $casts = [
+        'creationDate' => 'datetime',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'idUser');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'idCultivationPublication');
+    }
+    
+    public function readComment()
+    {
+        return $this->comments;
+    }
 }
