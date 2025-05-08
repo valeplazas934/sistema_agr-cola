@@ -2,71 +2,101 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\CultivationPublication;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CultivationPublicationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
+
     public function index()
     {
-        $publications = CultivationPublication::with('user')->latest()->paginate(10);
+        $publications = CultivationPublication::with(['user', 'category'])
+            ->latest()
+            ->paginate(10);
         return view('publications.index', compact('publications'));
     }
 
     public function create()
     {
-        return view('publications.create');
+        $categories = Category::all();
+        return view('publications.create', compact('categories'));
     }
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'cropTitle' => 'required|string|max:255',
-            'cropContent' => 'required|string',
+        $request->validate([
+            'cropTitle' => 'required|max:255',
+            'cropContent' => 'required',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         CultivationPublication::create([
-            'cropTitle' => $validated['cropTitle'],
-            'cropContent' => $validated['cropContent'],
-            'creationDate' => now(),
-            'idUser' => auth()->id(),
+            'cropTitle' => $request->cropTitle,
+            'cropContent' => $request->cropContent,
+            'idUser' => Auth::id(),
+            'category_id' => $request->category_id,
         ]);
 
-        return redirect()->route('publications.index')->with('success', 'Publicación creada exitosamente');
+        return redirect()->route('publications.index')
+            ->with('success', 'Publicación creada con éxito');
     }
 
     public function show(CultivationPublication $publication)
     {
-        $publication->load(['user', 'comments.user']);
+        $publication->load(['user', 'comments.user', 'category']);
         return view('publications.show', compact('publication'));
     }
 
     public function edit(CultivationPublication $publication)
     {
-        $this->authorize('update', $publication);
-        return view('publications.edit', compact('publication'));
+        if (Auth::id() !== $publication->idUser) {
+            return redirect()->route('publications.index')
+                ->with('error', 'No estás autorizado para editar esta publicación');
+        }
+
+        $categories = Category::all();
+        return view('publications.edit', compact('publication', 'categories'));
     }
 
     public function update(Request $request, CultivationPublication $publication)
     {
-        $this->authorize('update', $publication);
+        if (Auth::id() !== $publication->idUser) {
+            return redirect()->route('publications.index')
+                ->with('error', 'No estás autorizado para actualizar esta publicación');
+        }
 
-        $validated = $request->validate([
-            'cropTitle' => 'required|string|max:255',
-            'cropContent' => 'required|string',
+        $request->validate([
+            'cropTitle' => 'required|max:255',
+            'cropContent' => 'required',
+            'category_id' => 'nullable|exists:categories,id',
         ]);
 
         $publication->update([
-            'cropTitle' => $validated['cropTitle'],
-            'cropContent' => $validated['cropContent'],
+            'cropTitle' => $request->cropTitle,
+            'cropContent' => $request->cropContent,
+            'category_id' => $request->category_id,
         ]);
 
-        return redirect()->route('publications.show', $publication)->with('success', 'Publicación actualizada exitosamente');
+        return redirect()->route('publications.show', $publication)
+            ->with('success', 'Publicación actualizada con éxito');
     }
 
     public function destroy(CultivationPublication $publication)
     {
-        $this->authorize('delete', $publication);
+        if (Auth::id() !== $publication->idUser) {
+            return redirect()->route('publications.index')
+                ->with('error', 'No estás autorizado para eliminar esta publicación');
+        }
+
         $publication->delete();
-        return redirect()->route('publications.index')->with('success', 'Publicación eliminada exitosamente');
+
+        return redirect()->route('publications.index')
+            ->with('success', 'Publicación eliminada con éxito');
     }
 }
