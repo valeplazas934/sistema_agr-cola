@@ -6,11 +6,8 @@ use App\Http\Controllers\CultivationPublicationController;
 use App\Http\Controllers\CommentController; 
 
 // Auth routes 
-    Route::get('/register', function () { 
-    return view('auth.register'); 
-    })->name('register')->middleware('guest'); 
-    Route::post('/register', [UserController::class, 'register'])
-    >middleware('guest'); 
+    Route::get('/register', function () { return view('auth.register'); })->name('register')->middleware('guest'); 
+    Route::post('/register', [UserController::class, 'register'])->middleware('guest'); 
     Route::get('/login', function () { 
     return view('auth.login'); 
     })->name('login')->middleware('guest'); 

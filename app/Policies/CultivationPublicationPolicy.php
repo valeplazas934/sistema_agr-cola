@@ -35,18 +35,18 @@ class CultivationPublicationPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, CultivationPublication $cultivationPublication): bool
-    {
-        return false;
-    }
+    public function update(User $user, CultivationPublication $cultivationPublication) 
+    { 
+        return $user->id === $cultivationPublication->idUser; 
+    } 
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, CultivationPublication $cultivationPublication): bool
-    {
-        return false;
-    }
+    public function delete(User $user, CultivationPublication $cultivationPublication) 
+    { 
+       return $user->id === $cultivationPublication->idUser; 
+    } 
 
     /**
      * Determine whether the user can restore the model.
