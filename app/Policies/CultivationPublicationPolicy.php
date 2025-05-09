@@ -4,64 +4,19 @@ namespace App\Policies;
 
 use App\Models\CultivationPublication;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CultivationPublicationPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(User $user): bool
+    use HandlesAuthorization;
+
+    public function update(User $user, CultivationPublication $cultivationPublication)
     {
-        return false;
+        return $user->id === $cultivationPublication->id_user;
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, CultivationPublication $cultivationPublication): bool
+    public function delete(User $user, CultivationPublication $cultivationPublication)
     {
-        return false;
+        return $user->id === $cultivationPublication->id_user;
     }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, CultivationPublication $cultivationPublication) 
-    { 
-        return $user->id === $cultivationPublication->idUser; 
-    } 
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, CultivationPublication $cultivationPublication) 
-    { 
-       return $user->id === $cultivationPublication->idUser; 
-    } 
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, CultivationPublication $cultivationPublication): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, CultivationPublication $cultivationPublication): bool
-    {
-        return false;
-    }
-       
 }
