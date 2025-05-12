@@ -23,5 +23,14 @@ class VerifyEmailController extends Controller
         }
 
         return redirect()->intended(route('dashboard', absolute: false).'?verified=1');
+
+         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $request->session()->regenerate();
+            return redirect()->intended('home');
+        }
+
+        throw ValidationException::withMessages([
+            'email' => ['Las credenciales proporcionadas no coinciden con nuestros registros.'],
+        ]);
     }
 }
