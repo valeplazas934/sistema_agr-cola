@@ -13,7 +13,7 @@ class CultivationPublication extends Model
         'cropTitle',
         'cropContent',
         'idUser',
-        'category_id',
+        'idCategory',
         'creationDate',
     ];
 
@@ -28,7 +28,7 @@ class CultivationPublication extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'idCategory');
     }
 
     public function comments()

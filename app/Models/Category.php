@@ -16,6 +16,6 @@ class Category extends Model
 
     public function cultivationPublications()
     {
-        return $this->hasMany(CultivationPublication::class);
+        return $this->hasMany(CultivationPublication::class, 'idCategory'); 
     }
 }

@@ -16,22 +16,23 @@ use App\Http\Controllers\HomeController;
 // Página de inicio
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/', function () {
-    return view('welcome');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 Route::middleware('auth')->group(function () {
-    // Página de inicio
-    Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::get('/', function () {
-    return view('welcome');
-    });
+
     // Rutas de perfil (proporcionadas por Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    
+    Route::get('/profile', function () {return view('profile.show'); // asegúrate de que esta vista exista
+    })->name('profile.show');
+
     // Rutas para publicaciones de cultivo
     Route::resource('cultivation', CultivationPublicationController::class);
     Route::resource('publications', CultivationPublicationController::class);
@@ -42,19 +43,6 @@ Route::middleware('auth')->group(function () {
     
     // Rutas para categorías
     Route::resource('categories', CategoryController::class);
-});
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-    
-    // Rutas para publicaciones (Cultivation Publication)
-    Route::resource('publications', PublicationController::class);
-    
-    // Rutas para comentarios
-    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
-    Route::get('/comments/{id}', [CommentController::class, 'show'])->name('comments.show');
 });
 
 

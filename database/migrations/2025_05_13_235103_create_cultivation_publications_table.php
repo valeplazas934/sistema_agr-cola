@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         { 
-            Schema::create('cultivation_publications', function (Blueprint 
-            $table) { 
+            Schema::create('cultivation_publications', function (Blueprint $table) { 
             $table->id(); 
             $table->foreignId('idUser')->constrained('users'); 
+            $table->foreignId('idCategory')->constrained('categories');
             $table->string('cropTitle'); 
             $table->text('cropContent'); 
             $table->timestamp('creationDate')->useCurrent(); 
