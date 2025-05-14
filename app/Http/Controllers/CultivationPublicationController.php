@@ -11,21 +11,19 @@ class CultivationPublicationController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth');
     }
 
     public function index()
     {
-        $publications = CultivationPublication::with(['user', 'category'])
-            ->latest()
-            ->paginate(10);
-        return view('publications.index', compact('publications'));
-    }
+        $posts = CultivationPublication::with(['user', 'category', 'comments'])->latest()->get();
 
+        return view('cultivations.index', compact('posts'));
+    }
     public function create()
     {
         $categories = Category::all();
-        return view('publications.create', compact('categories'));
+        return view('cultivations.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -33,70 +31,70 @@ class CultivationPublicationController extends Controller
         $request->validate([
             'cropTitle' => 'required|max:255',
             'cropContent' => 'required',
-            'category_id' => 'nullable|exists:categories,id',
+            'idCategory' => 'nullable|exists:categories,id',
         ]);
 
         CultivationPublication::create([
             'cropTitle' => $request->cropTitle,
             'cropContent' => $request->cropContent,
             'idUser' => Auth::id(),
-            'category_id' => $request->category_id,
+            'idCategory' => $request->idCaregory,
         ]);
 
-        return redirect()->route('publications.index')
+        return redirect()->route('cultivations.index')
             ->with('success', 'Publicación creada con éxito');
     }
 
     public function show(CultivationPublication $publication)
     {
         $publication->load(['user', 'comments.user', 'category']);
-        return view('publications.show', compact('publication'));
+        return view('cultivations.show', compact('publication'));
     }
 
     public function edit(CultivationPublication $publication)
     {
         if (Auth::id() !== $publication->idUser) {
-            return redirect()->route('publications.index')
+            return redirect()->route('cultivations.index')
                 ->with('error', 'No estás autorizado para editar esta publicación');
         }
 
         $categories = Category::all();
-        return view('publications.edit', compact('publication', 'categories'));
+        return view('cultivations.edit', compact('cultivation_publications', 'categories'));
     }
 
     public function update(Request $request, CultivationPublication $publication)
     {
         if (Auth::id() !== $publication->idUser) {
-            return redirect()->route('publications.index')
+            return redirect()->route('cultivations.index')
                 ->with('error', 'No estás autorizado para actualizar esta publicación');
         }
 
         $request->validate([
             'cropTitle' => 'required|max:255',
             'cropContent' => 'required',
-            'category_id' => 'nullable|exists:categories,id',
+            'idCategory' => 'nullable|exists:categories,id',
         ]);
 
         $publication->update([
             'cropTitle' => $request->cropTitle,
             'cropContent' => $request->cropContent,
-            'category_id' => $request->category_id,
+            'idCategory' => $request->idCategory,
         ]);
 
-        return redirect()->route('publications.show', $publication)
+        return redirect()->route('cultivations.show', $publication)
             ->with('success', 'Publicación actualizada con éxito');
     }
 
     public function destroy(CultivationPublication $publication)
     {
         if (Auth::id() !== $publication->idUser) {
-            return redirect()->route('publications.index')
+            return redirect()->route('cultivations.index')
                 ->with('error', 'No estás autorizado para eliminar esta publicación');
         }
 
         $publication->delete();
 
-        return redirect()->route('publications.index')
+        return redirect()->route('cultivations.index')
             ->with('success', 'Publicación eliminada con éxito');
     }
 }

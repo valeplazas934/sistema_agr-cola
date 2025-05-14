@@ -17,7 +17,7 @@
             </a>
         </div>
     @else
-        <a href="{{ route('publications.create') }}" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-6 rounded">
+        <a href="{{ route('cultivations.create') }}" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-6 rounded">
             Crear Publicación
         </a>
     @endguest
@@ -34,7 +34,7 @@
             @foreach($recentPublications as $publication)
                 <div class="bg-white shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
                     <h3 class="text-xl font-semibold text-green-700 mb-2">
-                        <a href="{{ route('publications.show', $publication) }}">{{ $publication->cropTitle }}</a>
+                        <a href="{{ route('cultivations.show', $publication) }}">{{ $publication->cropTitle }}</a>
                     </h3>
                     <div class="text-sm text-gray-500 mb-2">
                         <span>Por: {{ $publication->user->name }} {{ $publication->user->lastName }}</span>
@@ -48,13 +48,13 @@
                         @endif
                     </div>
                     <p class="text-gray-700 mb-4">{{ Str::limit($publication->cropContent, 150) }}</p>
-                    <a href="{{ route('publications.show', $publication) }}" class="text-green-600 hover:underline">
+                    <a href="{{ route('cultivations.show', $publication) }}" class="text-green-600 hover:underline">
                         Leer más
                     </a>
                 </div>
             @endforeach
             <div class="mt-4">
-                <a href="{{ route('publications.index') }}" class="text-green-600 hover:underline font-semibold">
+                <a href="{{ route('cultivations.index') }}" class="text-green-600 hover:underline font-semibold">
                     Ver todas las publicaciones
                 </a>
             </div>

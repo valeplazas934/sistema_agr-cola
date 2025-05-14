@@ -26,7 +26,7 @@
                             <ul class="list-group">
                             @foreach($categoria->cultivosPublicacion as $cultivo)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a href="{{ route('cultivos.show', $cultivo->id) }}">
+                                    <a href="{{ route('cultivations.show', $cultivo->id) }}">
                                         {{ $cultivo->cropTitle }}
                                     </a>
                                     <span class="badge bg-primary rounded-pill">

@@ -22,28 +22,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/show', [ProfileController::class, 'show'])->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::patch('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
 });
 
-Route::middleware('auth')->group(function () {
-
-    // Rutas de perfil (proporcionadas por Breeze)
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/profile', function () {return view('profile.show'); // asegúrate de que esta vista exista
-    })->name('profile.show');
-
-    // Rutas para publicaciones de cultivo
-    Route::resource('cultivation', CultivationPublicationController::class);
-    Route::resource('publications', CultivationPublicationController::class);
-    
-    // Rutas para comentarios
-    Route::post('/cultivation/{cultivation}/comments', [CommentController::class, 'store'])->name('comments.store');
-    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
-    
-    // Rutas para categorías
-    Route::resource('categories', CategoryController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::get('/cultivations', [CultivationPublicationController::class, 'index'])
+        ->name('cultivations.index');
 });
+Route::get('/cultivations/{publication}', [CultivationPublicationController::class, 'show'])
+->name('cultivations.show');
+Route::get('/cultivations/{publication}', [CultivationPublicationController::class, 'show'])
+->name('cultivations.create');
+Route::get('/cultivations/{publication}', [CultivationPublicationController::class, 'show'])
+->name('cultivations.edit');
 
+// Ruta para mostrar todas las categorías
+Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+
+// Ruta para mostrar una categoría específica
+Route::get('categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 
 require __DIR__.'/auth.php';

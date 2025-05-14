@@ -26,7 +26,7 @@ class CommentController extends Controller
             'idCultivationPublication' => $publication->id,
         ]);
 
-        return redirect()->route('publications.show', $publication)
+        return redirect()->route('cultivations.show', $publication)
             ->with('success', 'Comentario agregado con éxito');
     }
 
@@ -39,7 +39,7 @@ class CommentController extends Controller
         $publicationId = $comment->idCultivationPublication;
         $comment->delete();
 
-        return redirect()->route('publications.show', $publicationId)
+        return redirect()->route('cultivations.show', $publicationId)
             ->with('success', 'Comentario eliminado con éxito');
     }
 }

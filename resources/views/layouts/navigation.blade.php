@@ -11,7 +11,7 @@
             <!-- Enlaces del menú -->
             <div class="flex space-x-8 items-center">
                 <a href="{{ route('home') }}" class="text-gray-700 hover:text-green-700">Inicio</a>
-                <a href="{{ route('publications.index') }}" class="text-gray-700 hover:text-green-700">Publicaciones</a>
+                <a href="{{ route('cultivations.index') }}" class="text-gray-700 hover:text-green-700">Publicaciones</a>
                 <a href="{{ route('categories.index') }}" class="text-gray-700 hover:text-green-700">Categorías</a>
             </div>
 
