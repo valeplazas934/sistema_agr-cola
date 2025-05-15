@@ -2,40 +2,45 @@
 
 @section('content')
 <div class="container">
-    @auth
-        <h1 class="text-2xl font-bold mb-4">Cultivation Publications</h1>
+    <h1>Publicaciones de Cultivo</h1>
 
-        @foreach($posts as $post)
-            <div class="bg-white rounded shadow p-4 mb-6">
-                <h2 class="text-xl font-semibold">{{ $post->cropTitle }}</h2>
-                <p class="text-gray-600 text-sm">
-                    By {{ $post->user->name }} |
-                    Category: {{ $post->category->name }} |
-                    {{ $post->creationDate }}
-                </p>
-                <p class="mt-2">{{ $post->cropContent }}</p>
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-                <div class="mt-4">
-                    <h4 class="font-medium">Comments ({{ $post->comments->count() }})</h4>
-                    @forelse($post->comments as $comment)
-                        <div class="border-t border-gray-200 mt-2 pt-2">
-                            <p class="text-sm">
-                                <strong>{{ $comment->user->name ?? 'Anonymous' }}</strong>: {{ $comment->content }}
-                            </p>
-                            <p class="text-xs text-gray-500">{{ $comment->creationDate }}</p>
-                        </div>
-                    @empty
-                        <p class="text-gray-500">No comments yet.</p>
-                    @endforelse
-                </div>
-            </div>
-        @endforeach
-    @else
-        <div class="text-center mt-10">
-            <h2 class="text-xl font-semibold text-red-600">Access Restricted</h2>
-            <p class="text-gray-600 mt-2">This section is only available for registered users.</p>
-            <a href="{{ route('login') }}" class="text-blue-600 underline mt-4 inline-block">Login to continue</a>
-        </div>
-    @endauth
+    <a href="{{ route('cultivations.create') }}" class="btn btn-primary mb-3">Nueva Publicación</a>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Categoría</th>
+                <th>Autor</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($posts as $post)
+                <tr>
+                    <td>{{ $post->cropTitle }}</td>
+                    <td>{{ $post->category->name ?? 'Sin categoría' }}</td>
+                    <td>{{ $post->user->name }}</td>
+                    <td>
+                        <a href="{{ route('cultivations.show', $post) }}" class="btn btn-info btn-sm">Ver</a>
+                        @if(auth()->id() === $post->idUser)
+                            <a href="{{ route('cultivations.edit', $post) }}" class="btn btn-warning btn-sm">Editar</a>
+                            <form action="{{ route('cultivations.destroy', $post) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro?')">Eliminar</button>
+                            </form>
+                        @endif
+                    </td>
+                </tr>
+            @empty
+                <tr><td colspan="4">No hay publicaciones.</td></tr>
+            @endforelse
+        </tbody>
+    </table>
 </div>
 @endsection

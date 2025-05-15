@@ -11,12 +11,14 @@ class CategoryController extends Controller
     {
         $this->middleware('auth')->except(['index', 'show']);
     }
-
+     
+    // CategoryController.php
     public function index()
     {
-        $categories = Category::withCount('cultivationPublications')->paginate(10);
+        $categories = Category::paginate(10); // ✅ Pagina de a 10 categorías
         return view('categories.index', compact('categories'));
     }
+
 
     public function create()
     {
@@ -25,15 +27,15 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|max:255|unique:categories',
-            'description' => 'nullable',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+            'description' => 'required|string|max:500',
         ]);
 
-        Category::create($request->all());
+        $category = Category::create($validated);
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Categoría creada con éxito');
+        return redirect()->route('categories.show', $category->id)
+            ->with('success', 'Categoría creada exitosamente');
     }
 
     public function show(Category $category)

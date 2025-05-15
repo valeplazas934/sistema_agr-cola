@@ -1,80 +1,76 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h2>Categorías de Cultivos</h2>
-                    <a href="{{ route('categorias.create') }}" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Nueva Categoría
-                    </a>
-                </div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    @if(count($categorias) > 0)
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nombre</th>
-                                        <th>Descripción</th>
-                                        <th>Fecha de Creación</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($categorias as $categoria)
-                                    <tr>
-                                        <td>{{ $categoria->id }}</td>
-                                        <td>{{ $categoria->nombre }}</td>
-                                        <td>{{ Str::limit($categoria->descripcion, 50) }}</td>
-                                        <td>{{ $categoria->created_at->format('d/m/Y H:i') }}</td>
-                                        <td>
-                                            <div class="btn-group" role="group">
-                                                <a href="{{ route('categorias.show', $categoria->id) }}" 
-                                                   class="btn btn-info btn-sm">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a href="{{ route('categorias.edit', $categoria->id) }}" 
-                                                   class="btn btn-warning btn-sm">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <form action="{{ route('categorias.destroy', $categoria->id) }}" 
-                                                      method="POST" class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" 
-                                                            onclick="return confirm('¿Está seguro que desea eliminar esta categoría?')">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="mt-3">
-                            {{ $categorias->links() }}
-                        </div>
-                    @else
-                        <div class="alert alert-info">
-                            No hay categorías registradas actualmente.
-                        </div>
-                    @endif
-                </div>
-            </div>
-        </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-extrabold text-green-700">Categorías de Cultivos</h2>
+        <a href="{{ route('categories.create') }}" 
+           class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-semibold rounded-md shadow-md transition">
+            <i class="fas fa-plus mr-2"></i> Nueva Categoría
+        </a>
     </div>
+
+    @if(session('success'))
+        <div class="mb-6 p-4 bg-green-100 text-green-800 rounded-md">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if($categories->count())
+        <div class="overflow-x-auto bg-white shadow rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-green-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-green-600 uppercase tracking-wider">ID</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-green-600 uppercase tracking-wider">Nombre</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-green-600 uppercase tracking-wider">Descripción</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-green-600 uppercase tracking-wider">Fecha de Creación</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-green-600 uppercase tracking-wider">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach($categories as $category)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $category->id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-800">{{ $category->nombre }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ Str::limit($category->descripcion, 60) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $category->created_at->format('d/m/Y H:i') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-1">
+                            <a href="{{ route('categories.show', $category->id) }}" 
+                               class="inline-block px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md shadow-sm" 
+                               title="Ver">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="{{ route('categories.edit', $category->id) }}" 
+                               class="inline-block px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow-sm" 
+                               title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline-block" 
+                                  onsubmit="return confirm('¿Está seguro que desea eliminar esta categoría?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" 
+                                        class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm" 
+                                        title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6">
+            {{ $categories->links() }}
+        </div>
+
+    @else
+        <div class="p-4 bg-yellow-100 text-yellow-700 rounded-md text-center font-medium">
+            No hay categorías registradas actualmente.
+        </div>
+    @endif
 </div>
 @endsection

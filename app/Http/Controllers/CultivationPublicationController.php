@@ -34,14 +34,14 @@ class CultivationPublicationController extends Controller
             'idCategory' => 'nullable|exists:categories,id',
         ]);
 
-        CultivationPublication::create([
+        $publication = CultivationPublication::create([
             'cropTitle' => $request->cropTitle,
             'cropContent' => $request->cropContent,
             'idUser' => Auth::id(),
-            'idCategory' => $request->idCaregory,
+            'idCategory' => $request->idCategory,
         ]);
 
-        return redirect()->route('cultivations.index')
+        return redirect()->route('cultivations.show', $publication)
             ->with('success', 'Publicación creada con éxito');
     }
 
@@ -59,7 +59,11 @@ class CultivationPublicationController extends Controller
         }
 
         $categories = Category::all();
-        return view('cultivations.edit', compact('cultivation_publications', 'categories'));
+        return view('cultivations.edit', [
+            'publication' => $publication,
+            'categories' => $categories
+        ]);
+
     }
 
     public function update(Request $request, CultivationPublication $publication)

@@ -9,37 +9,50 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    public function store(Request $request, CultivationPublication $publication)
+    public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required|max:1000',
+            'content' => 'required',
+            'idCultivationPublication' => 'required|exists:cultivation_publications,id',
         ]);
 
         Comment::create([
-            'content' => $request->content,
             'idUser' => Auth::id(),
-            'idCultivationPublication' => $publication->id,
+            'idCultivationPublication' => $request->idCultivationPublication,
+            'content' => $request->content,
         ]);
 
-        return redirect()->route('cultivations.show', $publication)
-            ->with('success', 'Comentario agregado con éxito');
+        return back()->with('success', 'Comentario publicado.');
+    }
+
+    public function edit(Comment $comment)
+    {
+        if (Auth::id() !== $comment->idUser) {
+            return redirect()->back()->with('error', 'No autorizado.');
+        }
+
+        return view('comments.edit', compact('comment'));
+    }
+
+    public function update(Request $request, Comment $comment)
+    {
+        if (Auth::id() !== $comment->idUser) {
+            return redirect()->back()->with('error', 'No autorizado.');
+        }
+
+        $request->validate(['content' => 'required']);
+        $comment->update(['content' => $request->content]);
+
+        return redirect()->route('cultivations.show', $comment->idCultivationPublication)->with('success', 'Comentario actualizado.');
     }
 
     public function destroy(Comment $comment)
     {
         if (Auth::id() !== $comment->idUser) {
-            return back()->with('error', 'No estás autorizado para eliminar este comentario');
+            return redirect()->back()->with('error', 'No autorizado.');
         }
 
-        $publicationId = $comment->idCultivationPublication;
         $comment->delete();
-
-        return redirect()->route('cultivations.show', $publicationId)
-            ->with('success', 'Comentario eliminado con éxito');
+        return back()->with('success', 'Comentario eliminado.');
     }
 }

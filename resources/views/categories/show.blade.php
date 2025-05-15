@@ -11,20 +11,20 @@
 
                 <div class="card-body">
                     <div class="mb-4">
-                        <h3>{{ $categoria->nombre }}</h3>
-                        <p class="text-muted">Creado el: {{ $categoria->created_at->format('d/m/Y H:i') }}</p>
+                        <h3>{{ $category->nombre }}</h3>
+                        <p class="text-muted">Creado el: {{ $category->created_at->format('d/m/Y H:i') }}</p>
                     </div>
 
                     <div class="mb-4">
                         <h4>Descripción:</h4>
-                        <p>{{ $categoria->descripcion }}</p>
+                        <p>{{ $category->descripcion }}</p>
                     </div>
 
                     <div class="mb-4">
                         <h4>Cultivos en esta categoría:</h4>
-                        @if($categoria->cultivosPublicacion->count() > 0)
+                        @if($category->cultivosPublicacion->count() > 0)
                             <ul class="list-group">
-                            @foreach($categoria->cultivosPublicacion as $cultivo)
+                            @foreach($category->cultivosPublicacion as $cultivo)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <a href="{{ route('cultivations.show', $cultivo->id) }}">
                                         {{ $cultivo->cropTitle }}
@@ -43,14 +43,14 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('categorias.index') }}" class="btn btn-secondary">
+                        <a href="{{ route('categories.index') }}" class="btn btn-secondary">
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
                         <div>
-                            <a href="{{ route('categorias.edit', $categoria->id) }}" class="btn btn-warning">
+                            <a href="{{ route('categories.edit', $categoria->id) }}" class="btn btn-warning">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
-                            <form action="{{ route('categorias.destroy', $categoria->id) }}" 
+                            <form action="{{ route('categories.destroy', $categoria->id) }}" 
                                   method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')

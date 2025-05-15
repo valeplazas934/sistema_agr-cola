@@ -1,62 +1,57 @@
 @extends('layouts.app')
 
-@section('title', 'Nueva Publicación')
-
 @section('content')
-<div class="mb-4">
-    <a href="{{ route('cultivations.index') }}" class="text-green-600 hover:underline flex items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Volver a publicaciones
-    </a>
-</div>
+<div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow">
+    @if(session('success'))
+        <div class="bg-green-100 text-green-700 px-4 py-2 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
 
-<div class="bg-white shadow-md rounded-lg p-6">
-    <h1 class="text-3xl font-bold text-green-800 mb-6">Nueva Publicación de Cultivo</h1>
-    
+    <div class="flex justify-center">
+        <h2 class="text-2xl font-bold mb-6">CREAR NUEVA PUBLICACIÓN</h2>
+    </div>
     <form method="POST" action="{{ route('cultivations.store') }}">
         @csrf
+
         <div class="mb-4">
-            <label for="cropTitle" class="block text-gray-700 font-bold mb-2">Título del Cultivo</label>
-            <input type="text" name="cropTitle" id="cropTitle" value="{{ old('cropTitle') }}" required
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('cropTitle') border-red-500 @enderror">
-            @error('cropTitle')
-                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
-            @enderror
+            <label class="block text-gray-700 font-semibold">Título</label>
+            <input type="text" name="cropTitle" class="w-full px-4 py-2 border rounded" required>
         </div>
-        
+
         <div class="mb-4">
-            <label for="idCategory" class="block text-gray-700 font-bold mb-2">Categoría</label>
-            <select name="idCategory" id="idCategory" 
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="">Selecciona una categoría (opcional)</option>
+            <label class="block text-gray-700 font-semibold">Contenido</label>
+            <textarea name="cropContent" id="editor" class="w-full px-4 py-2 border rounded" rows="6"></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-gray-700 font-semibold">Categoría</label>
+            <select name="idCategory" class="w-full px-4 py-2 border rounded">
+                <option value="">-- Sin categoría --</option>
                 @foreach($categories as $category)
-                    <option value="{{ $category->id }}" {{ old('idCategory') == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
+                    <option value="{{ $category->id }}">{{ $category->categoryName }}</option>
                 @endforeach
             </select>
-            @error('idCategory')
-                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
-            @enderror
         </div>
-        
-        <div class="mb-6">
-            <label for="cropContent" class="block text-gray-700 font-bold mb-2">Contenido</label>
-            <textarea name="cropContent" id="cropContent" rows="10" required
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('cropContent') border-red-500 @enderror"
-                placeholder="Escribe el contenido de tu publicación aquí...">{{ old('cropContent') }}</textarea>
-            @error('cropContent')
-                <p class="text-red-500 text-xs italic mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-        
-        <div>
-            <button type="submit" class="bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Publicar
-            </button>
-        </div>
+        <div class="flex justify-center">
+           <button type="submit" class="text-2xl font-bold mb-6">
+              GUARDAR
+           </button>
+        </div> 
     </form>
 </div>
 @endsection
+
+@section('scripts')
+<!-- Incluye TinyMCE desde CDN -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: '#editor',
+        plugins: 'image link lists',
+        toolbar: 'undo redo | styles | bold italic | alignleft aligncenter alignright | image link | bullist numlist',
+        height: 300
+    });
+</script>
+@endsection
+
