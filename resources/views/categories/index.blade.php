@@ -32,8 +32,8 @@
                     @foreach($categories as $category)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $category->id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-green-800">{{ $category->nombre }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ Str::limit($category->descripcion, 60) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $category->nombre }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ Str::limit($category->descripcion, 60) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $category->created_at->format('d/m/Y H:i') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-1">
                             <a href="{{ route('categories.show', $category->id) }}" 

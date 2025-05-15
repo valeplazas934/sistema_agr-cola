@@ -22,15 +22,15 @@
 
                     <div class="mb-4">
                         <h4>Cultivos en esta categoría:</h4>
-                        @if($category->cultivosPublicacion->count() > 0)
+                        @if($category->cultivationPublications->count() > 0)
                             <ul class="list-group">
-                            @foreach($category->cultivosPublicacion as $cultivo)
+                            @foreach($category->cultivationPublications as $Cultivo)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a href="{{ route('cultivations.show', $cultivo->id) }}">
-                                        {{ $cultivo->cropTitle }}
+                                    <a href="{{ route('cultivations.show', $Cultivo->id) }}">
+                                        {{ $Cultivo->cropTitle }}
                                     </a>
                                     <span class="badge bg-primary rounded-pill">
-                                        {{ $cultivo->created_at->format('d/m/Y') }}
+                                        {{ $Cultivo->created_at->format('d/m/Y') }}
                                     </span>
                                 </li>
                             @endforeach
@@ -47,10 +47,10 @@
                             <i class="fas fa-arrow-left"></i> Volver
                         </a>
                         <div>
-                            <a href="{{ route('categories.edit', $categoria->id) }}" class="btn btn-warning">
+                            <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning">
                                 <i class="fas fa-edit"></i> Editar
                             </a>
-                            <form action="{{ route('categories.destroy', $categoria->id) }}" 
+                            <form action="{{ route('categories.destroy', $category->id) }}" 
                                   method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
