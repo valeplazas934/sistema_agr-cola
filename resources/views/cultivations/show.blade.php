@@ -6,9 +6,7 @@
 
    <p><strong>Categoría:</strong>
     @if($publication->category)
-        {{ $publication->category->name }}
-    @else
-        Sin categoría
+        {{ $publication->category->idCategory }}
     @endif
     </p>
 

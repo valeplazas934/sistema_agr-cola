@@ -32,17 +32,17 @@
                     @foreach($categories as $category)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $category->id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $category->nombre }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ Str::limit($category->descripcion, 60) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ $category->name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ Str::limit($category->description, 60) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $category->created_at->format('d/m/Y H:i') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-1">
                             <a href="{{ route('categories.show', $category->id) }}" 
-                               class="inline-block px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md shadow-sm" 
+                               class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm" 
                                title="Ver">
                                 <i class="fas fa-eye"></i>
                             </a>
                             <a href="{{ route('categories.edit', $category->id) }}" 
-                               class="inline-block px-3 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md shadow-sm" 
+                               class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm"
                                title="Editar">
                                 <i class="fas fa-edit"></i>
                             </a>
