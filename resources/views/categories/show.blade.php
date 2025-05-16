@@ -24,13 +24,13 @@
                         <h4>Cultivos en esta categoría:</h4>
                         @if($category->cultivationPublications->count() > 0)
                             <ul class="list-group">
-                            @foreach($category->cultivationPublications as $Cultivo)
+                            @foreach($category->cultivationPublications as $Cultivation)
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <a href="{{ route('cultivations.show', $Cultivo->id) }}">
-                                        {{ $Cultivo->cropTitle }}
+                                    <a href="{{ route('cultivations.show', $Cultivation->id) }}">
+                                        {{ $Cultivation->cropTitle }}
                                     </a>
                                     <span class="badge bg-primary rounded-pill">
-                                        {{ $Cultivo->created_at->format('d/m/Y') }}
+                                        {{ $Cultivation->created_at->format('d/m/Y') }}
                                     </span>
                                 </li>
                             @endforeach

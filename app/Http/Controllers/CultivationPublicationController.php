@@ -37,42 +37,39 @@ class CultivationPublicationController extends Controller
             'idCategory' => 'nullable|exists:categories,id',
         ]);
 
-        $publication = new CultivationPublication();
-        $publication->cropTitle = $request->cropTitle;
-        $publication->cropContent = $request->cropContent;
-        $publication->idCategory = $request->idCategory;
-        $publication->idUser = Auth::id(); // Aquí se asigna el autor autenticado
-        $publication->save();
+        $cultivation = new CultivationPublication();
+        $cultivation->cropTitle = $request->cropTitle;
+        $cultivation->cropContent = $request->cropContent;
+        $cultivation->idCategory = $request->idCategory;
+        $cultivation->idUser = Auth::id(); // Aquí se asigna el autor autenticado
+        $cultivation->save();
 
         return redirect()->route('cultivations.index')->with('success', '¡Publicación creada exitosamente!');
     }
 
-    public function show(CultivationPublication $publication)
+    public function show(CultivationPublication $cultivation)
     {
-        $publication->load(['user', 'comments.user', 'category']);
-        return view('cultivations.show', compact('publication'));
+        $cultivation->load(['user', 'comments.user', 'category']);
+        return view('cultivations.show', compact('cultivation'));
     }
 
-    public function edit(CultivationPublication $publication)
+    public function edit(CultivationPublication $cultivation)
     {
-        if (auth()->id() !== $publication->idUser) {
-        abort(403, 'No estás autorizado para editar esta publicación');
-        }
-        return view('cultivations.edit', compact('publication'));
+        if (auth()->id() !== $cultivation->idUser) 
+        return view('cultivations.edit', compact('cultivation'));
 
         $categories = Category::all();
         return view('cultivations.edit', [
-            'publication' => $publication,
+            'cultivation' => $cultivation,
             'categories' => $categories
         ]);
 
     }
 
-    public function update(Request $request, CultivationPublication $publication)
+    public function update(Request $request, CultivationPublication $cultivation)
     {
-        if (Auth::id() !== $publication->idUser) {
-            return redirect()->route('cultivations.index')
-                ->with('error', 'No estás autorizado para actualizar esta publicación');
+        if (Auth::id() !== $cultivation->idUser) {
+            return redirect()->route('cultivations.index');
         }
 
         $request->validate([
@@ -81,24 +78,24 @@ class CultivationPublicationController extends Controller
             'idCategory' => 'nullable|exists:categories,id',
         ]);
 
-        $publication->update([
+        $cultivation->update([
             'cropTitle' => $request->cropTitle,
             'cropContent' => $request->cropContent,
             'idCategory' => $request->idCategory,
         ]);
 
-        return redirect()->route('cultivations.show', $publication)
+        return redirect()->route('cultivations.show', $cultivation)
             ->with('success', 'Publicación actualizada con éxito');
     }
 
-    public function destroy(CultivationPublication $publication)
+    public function destroy(CultivationPublication $cultivation)
     {
-        if (Auth::id() !== $publication->idUser) {
+        if (Auth::id() !== $cultivation->idUser) {
             return redirect()->route('cultivations.index')
                 ->with('error', 'No estás autorizado para eliminar esta publicación');
         }
 
-        $publication->delete();
+        $cultivation->delete();
 
         return redirect()->route('cultivations.index')
             ->with('success', 'Publicación eliminada con éxito');
