@@ -1,46 +1,61 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>Publicaciones de Cultivo</h1>
+<div class="container py-4">
+    <h2 class="mb-4 text-success"><i class="bi bi-seedling"></i> Publicaciones de Cultivo</h2>
 
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <a href="{{ route('cultivations.create') }}" class="btn btn-success mb-4">
+        <i class="bi bi-plus-circle"></i> Nueva Publicación
+    </a>
 
-    <a href="{{ route('cultivations.create') }}" class="btn btn-primary mb-3">Nueva Publicación</a>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @forelse ($posts as $post)
+            <div class="col">
+                <div class="card shadow border-0 h-100">
+                    <div class="card-body">
+                        <h3 class="card-title text-primary">{{ $post->cropTitle }}</h3>
+                        <p class="card-subtitle mb-2 text-muted">
+                            <strong>Categoría:</strong> {{ $post->category->name ?? 'Sin categoría' }}
+                        </p>
+                        <p class="card-text">
+                            <strong>Contenido:</strong> {{ $post->cropContent }}
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                Publicado por <strong>{{ $post->user->name }}</strong> el {{ $post->creationDate->format('d/m/Y') }}
+                            </small>
+                        </p>
+                    </div>
+                    <div class="card-footer bg-white d-flex gap-2">
+                        <a href="{{ route('cultivations.show', $post) }}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye"></i> Ver
+                        </a>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Categoría</th>
-                <th>Autor</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($posts as $post)
-                <tr>
-                    <td>{{ $post->cropTitle }}</td>
-                    <td>{{ $post->category->name ?? 'Sin categoría' }}</td>
-                    <td>{{ $post->user->name }}</td>
-                    <td>
-                        <a href="{{ route('cultivations.show', $post) }}" class="btn btn-info btn-sm">Ver</a>
-                        @if(auth()->id() === $post->idUser)
-                            <a href="{{ route('cultivations.edit', $post) }}" class="btn btn-warning btn-sm">Editar</a>
-                            <form action="{{ route('cultivations.destroy', $post) }}" method="POST" class="d-inline">
+                        @if (auth()->id() === $post->idUser)
+                            <a href="{{ route('cultivations.edit', $post) }}" class="btn btn-outline-warning btn-sm">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <form action="{{ route('cultivations.destroy', $post) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta publicación?')">
                                 @csrf
                                 @method('DELETE')
-                                <button class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro?')">Eliminar</button>
+                                <button class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
                             </form>
                         @endif
-                    </td>
-                </tr>
-            @empty
-                <tr><td colspan="4">No hay publicaciones.</td></tr>
-            @endforelse
-        </tbody>
-    </table>
+                    </div>
+                </div>
+            </div>
+        @empty
+            <div class="alert alert-info">
+                No hay publicaciones disponibles.
+            </div>
+        @endforelse
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+        {{ $posts->links() }}
+    </div>
 </div>
 @endsection
+

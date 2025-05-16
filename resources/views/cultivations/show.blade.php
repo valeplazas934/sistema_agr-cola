@@ -4,8 +4,22 @@
 <div class="container">
     <h1>{{ $publication->cropTitle }}</h1>
 
-    <p><strong>Categoría:</strong> {{ $publication->category->name ?? 'Sin categoría' }}</p>
-    <p><strong>Autor:</strong> {{ $publication->user->name }}</p>
+   <p><strong>Categoría:</strong>
+    @if($publication->category)
+        {{ $publication->category->name }}
+    @else
+        Sin categoría
+    @endif
+    </p>
+
+    <p><strong>Autor:</strong>
+        @if($publication->user)
+            {{ $publication->user->name }}
+        @else
+            Autor desconocido
+        @endif
+    </p>
+
     <p><strong>Contenido:</strong></p>
     <p>{{ $publication->cropContent }}</p>
 

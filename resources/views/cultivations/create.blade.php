@@ -26,10 +26,10 @@
 
         <div class="mb-4">
             <label class="block text-gray-700 font-semibold">Categoría</label>
-            <select name="idCategory" class="w-full px-4 py-2 border rounded">
-                <option value="">-- Sin categoría --</option>
+            <select name="idCategory" class="form-control" required>
+                <option value="">-- Selecciona una categoría --</option>
                 @foreach($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->categoryName }}</option>
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
         </div>
