@@ -12,14 +12,16 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'content' => 'required',
+            'content' => 'required|string',
             'idCultivationPublication' => 'required|exists:cultivation_publications,id',
+            'parent_id' => 'nullable|exists:comments,id',
         ]);
 
         Comment::create([
             'idUser' => Auth::id(),
             'idCultivationPublication' => $request->idCultivationPublication,
             'content' => $request->content,
+            'parent_id' => $request->parent_id,
         ]);
 
         return back()->with('success', 'Comentario publicado.');

@@ -14,6 +14,7 @@ class Comment extends Model
         'creationDate',
         'idUser',
         'idCultivationPublication',
+        'parent_id',
     ];
 
     protected $casts = [
@@ -29,4 +30,15 @@ class Comment extends Model
     {
         return $this->belongsTo(CultivationPublication::class, 'idCultivationPublication');
     }
+    // Comment.php
+    public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
 }

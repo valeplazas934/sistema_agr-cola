@@ -32,36 +32,51 @@
     {{-- Comentarios --}}
     <div class="bg-white shadow rounded-lg p-6 mb-8">
         <h2 class="text-2xl font-semibold text-blue-700 mb-4">💬 Comentarios</h2>
-
-        @forelse($cultivation->comments as $comment)
-            <div class="border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="font-semibold text-gray-800">{{ $comment->user->name }}</span>
-                    <span class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
-                </div>
-                <p class="text-gray-700 mb-3">{{ $comment->content }}</p>
-
-                @if(auth()->id() === $comment->idUser)
-                    <div class="flex space-x-2">
-                        <a href="{{ route('comments.edit', $comment) }}"
-                           class="text-1xl font-semibold text-blue-700 mb-4">
-                            ✏️ Editar
-                        </a>
-                        <form action="{{ route('comments.destroy', $comment) }}" method="POST"
-                              onsubmit="return confirm('¿Eliminar comentario?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                    class="text-1xl font-semibold text-blue-700 mb-4">
-                                🗑️ Eliminar
-                            </button>
-                        </form>
+            @foreach($cultivation->comments->where('parent_id', null) as $comment)
+                <div class="border border-gray-200 rounded-lg p-4 mb-4 bg-gray-50">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-semibold text-gray-800">{{ $comment->user->name }}</span>
+                        <span class="text-sm text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
                     </div>
-                @endif
-            </div>
-        @empty
-            <div class="text-gray-500 italic">No hay comentarios aún.</div>
-        @endforelse
+                    <p class="text-gray-700 mb-3">{{ $comment->content }}</p>
+
+                    {{-- Botones del autor --}}
+                    @if(auth()->id() === $comment->idUser)
+                        <div class="flex space-x-2 mb-2">
+                            <a href="{{ route('comments.edit', $comment) }}" class="text-blue-700">✏️ Editar</a>
+                            <form action="{{ route('comments.destroy', $comment) }}" method="POST" onsubmit="return confirm('¿Eliminar comentario?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-blue-700">🗑️ Eliminar</button>
+                            </form>
+                        </div>
+                    @endif
+
+                    {{-- Formulario de respuesta --}}
+                    <details class="mb-3">
+                        <summary class="cursor-pointer text-sm text-green-700">💬 Responder</summary>
+                        <form action="{{ route('comments.store') }}" method="POST" class="mt-2 space-y-2">
+                            @csrf
+                            <input type="hidden" name="idCultivationPublication" value="{{ $cultivation->id }}">
+                            <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+                            <textarea name="content" rows="2" class="w-full p-2 border rounded text-sm" placeholder="Tu respuesta..." required></textarea>
+                            <button class="text-sm text-blue-700">Responder</button>
+                        </form>
+                    </details>
+
+                    {{-- Mostrar respuestas --}}
+                    @foreach($comment->replies as $reply)
+                        <div class="ml-6 border-l-2 border-gray-300 pl-4 mt-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-800 font-medium">{{ $reply->user->name }}</span>
+                                <span class="text-sm text-gray-500">{{ $reply->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="text-gray-700">{{ $reply->content }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
+
     </div>
 
     {{-- Formulario nuevo comentario --}}
