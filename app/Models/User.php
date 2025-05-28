@@ -16,6 +16,7 @@ class User extends Authenticatable
         'lastName',
         'email',
         'password',
+        'is_admin',
     ];
 
     protected $hidden = [
@@ -37,4 +38,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class, 'idUser');
     }
+
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
 }
