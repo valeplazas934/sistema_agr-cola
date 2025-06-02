@@ -7,7 +7,11 @@ use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\CultivationController as AdminCultivationController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,15 +41,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
     Route::put('/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
 });
 
+Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.dashboard');
 
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-    Route::get('/home', function () {
-        return view('admin.home'); // o un controlador
-    });
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    //Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
-    // otras rutas protegidas
+    Route::resource('users', AdminUserController::class);
+    Route::resource('cultivations', AdminCultivationController::class);
+    Route::resource('categories', AdminCategoryController::class);
 });
 
 require __DIR__.'/auth.php';
