@@ -10,7 +10,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $recentPublications = CultivationPublication::with(['user', 'category'])
+        $recentcultivations = CultivationPublication::with(['user', 'category'])
             ->latest()
             ->take(5)
             ->get();
@@ -20,6 +20,6 @@ class HomeController extends Controller
             ->take(10)
             ->get();
             
-        return view('home', compact('recentPublications', 'categories'));
+        return view('home', compact('recentcultivations', 'categories'));
     }
 }

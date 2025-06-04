@@ -40,8 +40,8 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
-        $publications = $category->cultivationPublications()->with('user')->paginate(10);
-        return view('categories.show', compact('category', 'publications'));
+        $cultivations = $category->cultivationPublications()->with('user')->paginate(10);
+        return view('categories.show', compact('category', 'cultivations'));
     }
 
     public function edit(Category $category)

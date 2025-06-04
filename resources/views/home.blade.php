@@ -26,29 +26,29 @@
 <div class="flex flex-col md:flex-row gap-6">
     <div class="md:w-2/3">
         <h2 class="text-2xl font-bold text-green-800 mb-4">Publicaciones Recientes</h2>
-        @if($recentPublications->isEmpty())
+        @if($recentcultivations->isEmpty())
             <div class="bg-white shadow-md rounded-lg p-6">
                 <p class="text-gray-700">No hay publicaciones disponibles.</p>
             </div>
         @else
-            @foreach($recentPublications as $publication)
+            @foreach($recentcultivations as $cultivation)
                 <div class="bg-white shadow-md rounded-lg p-6 mb-4 hover:shadow-lg transition-shadow">
                     <h3 class="text-xl font-semibold text-green-700 mb-2">
-                        <a href="{{ route('cultivations.show', $publication) }}">{{ $publication->cropTitle }}</a>
+                        <a href="{{ route('cultivations.show', $cultivation) }}">{{ $cultivation->cropTitle }}</a>
                     </h3>
                     <div class="text-sm text-gray-500 mb-2">
-                        <span>Por: {{ $publication->user->name }} {{ $publication->user->lastName }}</span>
+                        <span>Por: {{ $cultivation->user->name }} {{ $cultivation->user->lastName }}</span>
                         <span class="mx-2">|</span>
-                        <span>{{ $publication->creationDate->format('d/m/Y') }}</span>
-                        @if($publication->category)
+                        <span>{{ $cultivation->creationDate->format('d/m/Y') }}</span>
+                        @if($cultivation->category)
                             <span class="mx-2">|</span>
-                            <a href="{{ route('categories.show', $publication->category) }}" class="text-green-600 hover:underline">
-                                {{ $publication->category->name }}
+                            <a href="{{ route('categories.show', $cultivation->category) }}" class="text-green-600 hover:underline">
+                                {{ $cultivation->category->name }}
                             </a>
                         @endif
                     </div>
-                    <p class="text-gray-700 mb-4">{{ Str::limit($publication->cropContent, 150) }}</p>
-                    <a href="{{ route('cultivations.show', $publication) }}" class="text-green-600 hover:underline">
+                    <p class="text-gray-700 mb-4">{{ Str::limit($cultivation->cropContent, 150) }}</p>
+                    <a href="{{ route('cultivations.show', $cultivation) }}" class="text-green-600 hover:underline">
                         Leer más
                     </a>
                 </div>

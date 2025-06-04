@@ -44,10 +44,8 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::get('/admin', [AdminController::class, 'index'])->middleware(['auth', 'admin'])->name('admin.dashboard');
-
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    //Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard');
 
     Route::resource('users', AdminUserController::class);
     Route::resource('cultivations', AdminCultivationController::class);
