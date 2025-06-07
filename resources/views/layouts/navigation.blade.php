@@ -13,7 +13,6 @@
                 @auth
                     @if (Auth::check() && Auth::user()->isAdmin())
                         <!-- Menú del administrador -->
-                         <a href="{{ route('home') }}" class="text-gray-700 hover:text-green-700">Inicio</a>
                         <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-green-700">Panel de Administrador</a>
                         <a href="{{ route('admin.users.index') }}" class="text-gray-700 hover:text-green-700">Gestionar Usuarios</a>
                         <a href="{{ route('admin.cultivations.index') }}" class="text-gray-700 hover:text-green-700">Gestionar Publicaciones</a>
@@ -45,12 +44,11 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            @if (Auth::user()->role !== 'admin')
-                                <x-dropdown-link href="{{ route('profile.show') }}">
-                                    Perfil
-                                </x-dropdown-link>
-                            @endif
-
+                            
+                            <x-dropdown-link href="{{ route('profile.show') }}">
+                                Perfil
+                            </x-dropdown-link>
+                            
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link href="{{ route('logout') }}"

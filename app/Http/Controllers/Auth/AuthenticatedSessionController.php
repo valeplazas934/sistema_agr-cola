@@ -28,18 +28,20 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        // Redirecciona según el rol
         $user = Auth::user();
 
+        // Si el usuario es admin y venía desde una URL protegida, lo enviamos a su dashboard
         if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
+            // Si no hay intención previa, lo mandamos al dashboard admin
+            return redirect()->intended(route('admin.dashboard'));
         }
 
-        return redirect()->route('home');
+        // Para usuarios normales: redirigir a donde intentaban ir antes del login, o al home
+        return redirect()->intended(route('home'));
     }
+
 
 
     /**

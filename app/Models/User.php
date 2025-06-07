@@ -16,8 +16,9 @@ class User extends Authenticatable
         'lastName',
         'email',
         'password',
-        'is_admin',
+        'role', // ✅ necesario
     ];
+
 
     protected $hidden = [
         'password',
