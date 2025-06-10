@@ -41,23 +41,26 @@
         </div>
 
         <div class="flex justify-between mt-6">
-            <a href="{{ route('categories.index') }}" class="btn btn-outline-secondary">
+            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i> Volver
             </a>
 
-            <div class="flex gap-2">
-                <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-outline-warning">
-                    <i class="bi bi-pencil-square"></i> Editar
-                </a>
+            @if(auth()->user() && auth()->user()->isAdmin())
+                <div class="flex gap-2">
+                    <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-outline-warning">
+                        <i class="bi bi-pencil-square"></i> Editar
+                    </a>
 
-                <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('¿Está seguro que desea eliminar esta categoría?')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-outline-danger">
-                        <i class="bi bi-trash"></i> Eliminar
-                    </button>
-                </form>
-            </div>
+                    <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('¿Está seguro que desea eliminar esta categoría?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </form>
+                </div>
+            @endif
+
         </div>
 
     </div>

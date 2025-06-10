@@ -6,15 +6,8 @@
 
     {{-- Accesos directos --}}
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <a href="{{ route('admin.users.create') }}" class="bg-green-600 text-white p-4 rounded-lg shadow hover:bg-green-700 flex items-center justify-between">
-            <div>
-                <h3 class="font-semibold text-lg">Nuevo Usuario</h3>
-                <p class="text-sm text-blue-100">Crear un nuevo usuario</p>
-            </div>
-            <i class="fas fa-user-plus text-2xl"></i>
-        </a>
 
-        <a href="{{ route('admin.categories.create') }}" class="bg-green-600 text-white p-4 rounded-lg shadow hover:bg-green-700 flex items-center justify-between">
+        <a href="{{ route('categories.create') }}" class="bg-green-600 text-white p-4 rounded-lg shadow hover:bg-green-700 flex items-center justify-between">
             <div>
                 <h3 class="font-semibold text-lg">Nueva Categoría</h3>
                 <p class="text-sm text-yellow-100">Crear una categoría</p>
@@ -22,7 +15,7 @@
             <i class="fas fa-folder-plus text-2xl"></i>
         </a>
 
-        <a href="{{ route('admin.cultivations.create') }}" class="bg-green-600 text-white p-4 rounded-lg shadow hover:bg-green-700 flex items-center justify-between">
+        <a href="{{ route('cultivations.create') }}" class="bg-green-600 text-white p-4 rounded-lg shadow hover:bg-green-700 flex items-center justify-between">
             <div>
                 <h3 class="font-semibold text-lg">Nueva Publicación</h3>
                 <p class="text-sm text-green-100">Crear una publicación</p>
@@ -84,7 +77,7 @@
             <h2 class="text-xl font-semibold text-gray-800 mb-1">Publicaciones</h2>
             <p class="text-gray-600 mb-2">Gestiona las publicaciones agrícolas.</p>
             <p class="text-sm text-gray-500 mb-4">Total: <strong>{{ $totalCultivations }}</strong> publicaciones</p>
-            <a href="{{ route('admin.cultivations.index') }}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            <a href="{{ route('cultivations.index') }}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
                 Ver Publicaciones
             </a>
         </div>
@@ -94,7 +87,7 @@
             <h2 class="text-xl font-semibold text-gray-800 mb-1">Categorías</h2>
             <p class="text-gray-600 mb-2">Administra las categorías disponibles.</p>
             <p class="text-sm text-gray-500 mb-4">Total: <strong>{{ $totalCategories }}</strong> categorías</p>
-            <a href="{{ route('admin.categories.index') }}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+            <a href="{{ route('categories.index') }}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
                 Ver Categorías
             </a>
         </div>

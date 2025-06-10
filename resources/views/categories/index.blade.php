@@ -37,25 +37,28 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $category->created_at->format('d/m/Y H:i') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium space-x-1">
                             <a href="{{ route('categories.show', $category->id) }}" 
-                               class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm" 
-                               title="Ver">
+                            class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm" 
+                            title="Ver">
                                 <i class="fas fa-eye"></i>
                             </a>
-                            <a href="{{ route('categories.edit', $category->id) }}" 
-                               class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm"
-                               title="Editar">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline-block" 
-                                  onsubmit="return confirm('¿Está seguro que desea eliminar esta categoría?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" 
-                                        class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm" 
-                                        title="Eliminar">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </form>
+
+                            @if(auth()->user() && auth()->user()->isAdmin())
+                                <a href="{{ route('categories.edit', $category->id) }}" 
+                                class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm"
+                                title="Editar">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST" class="inline-block" 
+                                    onsubmit="return confirm('¿Está seguro que desea eliminar esta categoría?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" 
+                                            class="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded-md shadow-sm" 
+                                            title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

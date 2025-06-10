@@ -23,10 +23,10 @@
             <p class="leading-relaxed">{{ $cultivation->cropContent }}</p>
         </div>
 
-        <a href="{{ route('cultivations.index') }}"
-           class="inline-flex items-center mt-6 px-4 py-2 bg-gray-200 text-gray-800 font-medium rounded hover:bg-gray-300 transition">
-            ← Volver
+        <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i>Volver
         </a>
+
     </div>
 
     {{-- Comentarios --}}

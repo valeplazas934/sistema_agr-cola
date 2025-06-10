@@ -33,10 +33,10 @@
             </div>
 
             <div class="flex justify-between">
-                <a href="{{ route('categories.index') }}"
-                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
-                    Volver
+                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Volver
                 </a>
+
                 <button type="submit"
                     class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded font-semibold">
                     Guardar Categoría

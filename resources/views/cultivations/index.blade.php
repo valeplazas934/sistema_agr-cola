@@ -37,10 +37,10 @@
                         <i class="bi bi-eye"></i> Ver
                     </a>
                      @if(auth()->check() && auth()->user()->isAdmin())
-                        <a href="{{ route('admin.cultivations.edit', $post) }}" class="px-3 py-1 text-sm border border-yellow-500 text-yellow-500 rounded hover:bg-yellow-50">
+                        <a href="{{ route('cultivations.edit', $post) }}" class="px-3 py-1 text-sm border border-yellow-500 text-yellow-500 rounded hover:bg-yellow-50">
                             <i class="bi bi-pencil-square"></i> Editar
                         </a>
-                        <form action="{{ route('admin.cultivations.destroy', $post) }}" method="POST" onsubmit="return confirm('¿Eliminar publicación?')" class="inline-block">
+                        <form action="{{ route('cultivations.destroy', $post) }}" method="POST" onsubmit="return confirm('¿Eliminar publicación?')" class="inline-block">
                             @csrf
                             @method('DELETE')
                             <button class="px-3 py-1 text-sm border border-red-500 text-red-500 rounded hover:bg-red-50">

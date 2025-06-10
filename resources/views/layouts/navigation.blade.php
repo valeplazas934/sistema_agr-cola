@@ -15,8 +15,8 @@
                         <!-- Menú del administrador -->
                         <a href="{{ route('admin.dashboard') }}" class="text-gray-700 hover:text-green-700">Panel de Administrador</a>
                         <a href="{{ route('admin.users.index') }}" class="text-gray-700 hover:text-green-700">Gestionar Usuarios</a>
-                        <a href="{{ route('admin.cultivations.index') }}" class="text-gray-700 hover:text-green-700">Gestionar Publicaciones</a>
-                        <a href="{{ route('admin.categories.index') }}" class="text-gray-700 hover:text-green-700">Gestionar Categorías</a>
+                        <a href="{{ route('cultivations.index') }}" class="text-gray-700 hover:text-green-700">Gestionar Publicaciones</a>
+                        <a href="{{ route('categories.index') }}" class="text-gray-700 hover:text-green-700">Gestionar Categorías</a>
                     @else
                         <!-- Menú para usuarios normales -->
                         <a href="{{ route('home') }}" class="text-gray-700 hover:text-green-700">Inicio</a>

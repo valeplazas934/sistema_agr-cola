@@ -39,7 +39,7 @@
             </div>
 
             <div class="flex justify-between mt-6">
-                <a href="{{ route('categories.index') }}" class="btn btn-outline-secondary">
+                <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left"></i> Volver
                 </a>
 

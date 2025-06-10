@@ -40,9 +40,10 @@
 
         <!-- Botones -->
         <div class="flex justify-between">
-            <a href="{{ route('cultivations.index') }}" class="px-5 py-2 text-gray-600 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 transition">
-                ← Volver
+            <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Volver
             </a>
+
             <button type="submit" class="px-5 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition">
                 Guardar
             </button>
