@@ -24,8 +24,14 @@
         </div>
 
         <a href="{{ url()->previous() }}" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left"></i>Volver
+            <i class="bi bi-arrow-left"></i> Volver
         </a>
+
+        <a href="{{ session('url_origen', route('cultivations.index')) }}" class="text-blue-600 hover:underline">
+            ← Volver
+        </a>
+
+
 
     </div>
 

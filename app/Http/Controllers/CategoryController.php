@@ -15,6 +15,8 @@ class CategoryController extends Controller
     // CategoryController.php
     public function index()
     {
+        session()->forget('url_origen');
+
         $categories = Category::paginate(10); // ✅ Pagina de a 10 categorías
         return view('categories.index', compact('categories'));
     }
@@ -40,6 +42,10 @@ class CategoryController extends Controller
 
     public function show(Category $category)
     {
+        if (!session()->has('url_origen')) {
+        session(['url_origen' => url()->previous()]);
+        }
+        
         $cultivations = $category->cultivationPublications()->with('user')->paginate(10);
         return view('categories.show', compact('category', 'cultivations'));
     }

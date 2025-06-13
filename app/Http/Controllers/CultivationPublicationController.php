@@ -16,6 +16,8 @@ class CultivationPublicationController extends Controller
 
     public function index()
     {
+        session()->forget('url_origen');
+        
         $posts = CultivationPublication::with(['user', 'category', 'comments'])
                     ->latest()
                     ->paginate(10); // ✅ Esto habilita el método links()
@@ -49,6 +51,10 @@ class CultivationPublicationController extends Controller
 
     public function show(CultivationPublication $cultivation)
     {
+        if (!session()->has('url_origen')) {
+        session(['url_origen' => url()->previous()]);
+        }
+
         $cultivation->load(['user', 'comments.user', 'category']);
         return view('cultivations.show', compact('cultivation'));
     }

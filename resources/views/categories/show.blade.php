@@ -45,6 +45,10 @@
                 <i class="bi bi-arrow-left"></i> Volver
             </a>
 
+            <a href="{{ session('url_origen', route('categories.index')) }}" class="text-blue-600 hover:underline">
+                ← Volver
+            </a>
+
             @if(auth()->user() && auth()->user()->isAdmin())
                 <div class="flex gap-2">
                     <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-outline-warning">
