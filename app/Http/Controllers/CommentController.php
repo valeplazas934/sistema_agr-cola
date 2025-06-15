@@ -57,4 +57,20 @@ class CommentController extends Controller
         $comment->delete();
         return back()->with('success', 'Comentario eliminado.');
     }
+
+    public function reply(Request $request, Comment $comment)
+    {
+        $request->validate([
+            'reply' => 'required|string|max:1000',
+        ]);
+
+        $reply = new Comment();
+        $reply->content = $request->input('reply');
+        $reply->idUser = auth()->id();
+        $reply->parent_id = $comment->id;
+        $reply->idCultivationPublication= $comment->idCultivationPublication; // Asegúrate que esté en tu modelo
+        $reply->save();
+
+        return back()->with('success', 'Respuesta publicada correctamente.');
+    }
 }

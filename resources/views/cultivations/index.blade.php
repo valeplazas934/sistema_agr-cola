@@ -36,7 +36,7 @@
                     <a href="{{ route('cultivations.show', $post) }}" class="px-3 py-1 text-sm border border-blue-500 text-blue-500 rounded hover:bg-blue-50">
                         <i class="bi bi-eye"></i> Ver
                     </a>
-                     @if(auth()->check() && auth()->user()->isAdmin())
+                    @if(auth()->check() && (auth()->user()->isAdmin() || auth()->user()->id === $post->idUser))
                         <a href="{{ route('cultivations.edit', $post) }}" class="px-3 py-1 text-sm border border-yellow-500 text-yellow-500 rounded hover:bg-yellow-50">
                             <i class="bi bi-pencil-square"></i> Editar
                         </a>
