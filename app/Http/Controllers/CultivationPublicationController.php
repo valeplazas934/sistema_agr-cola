@@ -62,20 +62,17 @@ class CultivationPublicationController extends Controller
     public function edit(CultivationPublication $cultivation)
     {
         if (auth()->id() !== $cultivation->idUser && !auth()->user()->isAdmin()) {
-            return redirect()->route('cultivations.index')->with('error', 'No tienes permiso para editar esta publicación.');
+            abort(403, 'No tienes permiso para editar esta publicación.');
         }
 
         $categories = Category::all();
         return view('cultivations.edit', compact('cultivation', 'categories'));
     }
 
-
     public function update(Request $request, CultivationPublication $cultivation)
     {
-        // Solo autor o administrador puede actualizar
         if (auth()->id() !== $cultivation->idUser && !auth()->user()->isAdmin()) {
-            return redirect()->route('cultivations.index')
-                ->with('error', 'No tienes permiso para actualizar esta publicación.');
+            abort(403, 'No tienes permiso para actualizar esta publicación.');
         }
 
         $request->validate([
@@ -93,14 +90,11 @@ class CultivationPublicationController extends Controller
         return redirect()->route('cultivations.show', $cultivation)
             ->with('success', 'Publicación actualizada con éxito');
     }
-    
 
     public function destroy(CultivationPublication $cultivation)
     {
-        // Solo autor o administrador puede eliminar
         if (auth()->id() !== $cultivation->idUser && !auth()->user()->isAdmin()) {
-            return redirect()->route('cultivations.index')
-                ->with('error', 'No tienes permiso para eliminar esta publicación.');
+            abort(403, 'No tienes permiso para eliminar esta publicación.');
         }
 
         $cultivation->delete();
@@ -108,5 +102,6 @@ class CultivationPublicationController extends Controller
         return redirect()->route('cultivations.index')
             ->with('success', 'Publicación eliminada con éxito');
     }
+
 
 }
