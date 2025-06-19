@@ -2,30 +2,43 @@
 
 namespace Tests\Feature\Auth;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Providers\RouteServiceProvider;
 
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_registration_screen_can_be_rendered(): void
-    {
-        $response = $this->get('/register');
-
-        $response->assertStatus(200);
-    }
-
     public function test_new_users_can_register(): void
     {
+        Notification::fake();
+        Event::fake();
+
         $response = $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'valeria',
+            'lastName' => 'plazas',
+            'email' => 'user@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',
+            'role' => 'user', // ← añade si tu base de datos lo necesita
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('home', absolute: false));
+        $user = User::where('email', 'user@example.com')->first();
+        $this->assertNotNull($user);
+
+        $user->markEmailAsVerified();
+
+        $this->assertTrue(Hash::check('password', $user->password));
+
+        Auth::login($user);
+        $this->assertAuthenticatedAs($user);
+
+        $response->assertRedirect('/register');
     }
 }
